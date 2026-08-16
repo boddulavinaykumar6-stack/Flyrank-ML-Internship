@@ -1,9 +1,7 @@
 # Capstone Report
 
-- **Author:** 
+- **Author:** Boddula Vinay Kumar
 - **Lane:** Refresh / Content Opportunity Scoring
-- **Repo:** 
-- **Date:** 
 
 ## 0. Abstract
 
