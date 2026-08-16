@@ -1,1 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Ranking Content Opportunities with Search Intelligence</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      color: #202124;
+      background: #f7f8fa;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 50px 24px 80px;
+    }
+
+    .hero {
+      background: white;
+      padding: 48px;
+      border-radius: 18px;
+      margin-bottom: 28px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+    }
+
+    h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin-top: 55px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    h3 {
+      margin-top: 30px;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      color: #5f6368;
+    }
+
+    .meta {
+      margin-top: 25px;
+      color: #5f6368;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .metric {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .label {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .paper-section {
+      background: white;
+      padding: 35px 40px;
+      margin-top: 24px;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 22px 0;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #f1f3f4;
+    }
+
+    .highlight {
+      background: #f1f7ff;
+      padding: 20px;
+      border-left: 4px solid #4285f4;
+      margin: 25px 0;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      margin: 25px auto;
+      border-radius: 10px;
+    }
+
+    code {
+      background: #f1f3f4;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #666;
+    }
+
+    @media (max-width: 750px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .hero,
+      .paper-section {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- =====================================================
+       TITLE + ABSTRACT
+       ===================================================== -->
+
+  <section class="hero">
+
+    <h1>Ranking Content Opportunities with Search Intelligence</h1>
+
+    <p class="subtitle">
+      Can historical search and engagement signals help prioritize
+      content pages for editorial review?
+    </p>
+
+    <p class="meta">
+      <strong>Lane:</strong> Refresh / Content Opportunity Scoring
+    </p>
+
+    <div class="card-grid">
+
+      <div class="card">
+        <div class="metric">41.93%</div>
+        <div class="label">Random Forest Precision@10%</div>
+      </div>
+
+      <div class="card">
+        <div class="metric">2.00×</div>
+        <div class="label">Random Forest Lift@10%</div>
+      </div>
+
+      <div class="card">
+        <div class="metric">20.97%</div>
+        <div class="label">Test-set positive base rate</div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       ABSTRACT
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>Abstract</h2>
+
+    <p>
+      This project asks whether historical search and engagement signals
+      can rank content pages that are more likely to experience click
+      improvement in the following month.
+    </p>
+
+    <p>
+      Using the FlyRank internship warehouse, the analysis constructs a
+      client × content dataset from March 2026 historical signals and
+      April 2026 click outcomes.
+    </p>
+
+    <p>
+      A transparent Week 4 baseline is compared with Logistic Regression,
+      Decision Tree, and Random Forest models using a client-grouped
+      train/test split.
+    </p>
+
+    <p>
+      On the held-out test set, the Random Forest achieved 41.93%
+      Precision@10% and 2.00× lift, compared with 38.40% and 1.83×
+      for the transparent baseline.
+    </p>
+
+    <p>
+      The resulting ranking is intended as decision support for
+      prioritizing pages for human review, not as a causal prediction
+      of the effect of refreshing a page.
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       1. PROBLEM
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>1. Problem Statement</h2>
+
+    <p>
+      The decision supported by this project is which content pages an
+      editor should review first for potential improvement.
+    </p>
+
+    <p>
+      The unit of analysis is <strong>client × content</strong>.
+      The output is a ranked opportunity score for eligible content pages.
+    </p>
+
+    <p>
+      A human editor can use the ranking to prioritize pages for further
+      investigation, including reviewing click capture, search-result
+      alignment, and content relevance.
+    </p>
+
+    <p>
+      The cost of a wrong call is spending limited editorial time on a
+      page that does not subsequently show click improvement.
+    </p>
+
+    <div class="highlight">
+      The system is therefore designed as <strong>decision support</strong>,
+      not an automatic refresh decision.
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       2. DATA
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>2. Data</h2>
+
+    <p>
+      The analysis uses the FlyRank internship warehouse and focuses on
+      March 2026 historical features with April 2026 outcomes.
+    </p>
+
+    <div class="card-grid">
+
+      <div class="card">
+        <div class="metric">176,737</div>
+        <div class="label">Final modeling rows</div>
+      </div>
+
+      <div class="card">
+        <div class="metric">5</div>
+        <div class="label">Predictive features</div>
+      </div>
+
+      <div class="card">
+        <div class="metric">19.57%</div>
+        <div class="label">Positive rate in modeling population</div>
+      </div>
+
+    </div>
+
+    <h3>Features</h3>
+
+    <ul>
+      <li><code>avg_impressions</code></li>
+      <li><code>avg_clicks</code></li>
+      <li><code>avg_position</code></li>
+      <li><code>avg_pageviews</code></li>
+      <li><code>avg_sessions</code></li>
+    </ul>
+
+    <h3>Target</h3>
+
+    <p>
+      The target is 1 when April average clicks are greater than March
+      average clicks, and 0 otherwise.
+    </p>
+
+    <h3>Population decision</h3>
+
+    <p>
+      Rows without usable March <code>avg_position</code> were excluded
+      because the Week 4 baseline depends on this signal. Position
+      availability was strongly associated with the target, so these
+      values were not blindly imputed.
+    </p>
+
+    <p>
+      Pseudonymous client and content IDs were used for grouping and
+      joining only, never as predictive features.
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       3. METHODOLOGY
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>3. Methodology</h2>
+
+    <h3>Baseline</h3>
+
+    <p>
+      The transparent Week 4 baseline is:
+    </p>
+
+    <div class="highlight">
+      <code>baseline_score = avg_impressions × avg_position</code>
+    </div>
+
+    <h3>Models</h3>
+
+    <ul>
+      <li>Logistic Regression</li>
+      <li>Decision Tree</li>
+      <li>Random Forest</li>
+    </ul>
+
+    <p>
+      All models use the same five historical features. The evaluation
+      uses a client-grouped train/test split so that clients do not appear
+      in both training and testing.
+    </p>
+
+    <h3>Validation split</h3>
+
+    <table>
+      <tr>
+        <th></th>
+        <th>Rows</th>
+        <th>Clients</th>
+        <th>Positive rate</th>
+      </tr>
+
+      <tr>
+        <td>Training</td>
+        <td>103,085</td>
+        <td>32</td>
+        <td>18.57%</td>
+      </tr>
+
+      <tr>
+        <td>Testing</td>
+        <td>73,652</td>
+        <td>15</td>
+        <td>20.97%</td>
+      </tr>
+    </table>
+
+    <p>
+      Client overlap between training and testing was zero.
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       4. RESULTS
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>4. Results</h2>
+
+    <p>
+      Precision@10% is the primary decision metric because the practical
+      use case is prioritizing a limited top portion of pages for review.
+    </p>
+
+    <table>
+
+      <tr>
+        <th>Ranking method</th>
+        <th>Precision@10%</th>
+        <th>Recall@10%</th>
+        <th>Lift@10%</th>
+      </tr>
+
+      <tr>
+        <td><strong>Random Forest</strong></td>
+        <td><strong>41.93%</strong></td>
+        <td>19.99%</td>
+        <td><strong>2.00×</strong></td>
+      </tr>
+
+      <tr>
+        <td>Decision Tree</td>
+        <td>39.93%</td>
+        <td>19.04%</td>
+        <td>1.90×</td>
+      </tr>
+
+      <tr>
+        <td>W04 Baseline</td>
+        <td>38.40%</td>
+        <td>18.31%</td>
+        <td>1.83×</td>
+      </tr>
+
+      <tr>
+        <td>Logistic Regression</td>
+        <td>34.76%</td>
+        <td>16.57%</td>
+        <td>1.66×</td>
+      </tr>
+
+    </table>
+
+    <p>
+      The Random Forest improved Precision@10% by
+      <strong>3.53 percentage points</strong> over the transparent
+      Week 4 baseline.
+    </p>
+
+    <p>
+      The test-set positive base rate was 20.97%, so the Random Forest's
+      41.93% top-10% precision represents approximately 2.00× lift over
+      the overall positive rate.
+    </p>
+
+    <h3>Model-level results</h3>
+
+    <table>
+
+      <tr>
+        <th>Model</th>
+        <th>Accuracy</th>
+        <th>Precision</th>
+        <th>Recall</th>
+        <th>F1</th>
+        <th>ROC-AUC</th>
+        <th>PR-AUC</th>
+      </tr>
+
+      <tr>
+        <td>Logistic Regression</td>
+        <td>65.42%</td>
+        <td>31.61%</td>
+        <td>55.80%</td>
+        <td>40.36%</td>
+        <td>0.6626</td>
+        <td>0.3165</td>
+      </tr>
+
+      <tr>
+        <td>Decision Tree</td>
+        <td>64.29%</td>
+        <td>34.31%</td>
+        <td>76.84%</td>
+        <td>47.44%</td>
+        <td>0.7265</td>
+        <td>0.3477</td>
+      </tr>
+
+      <tr>
+        <td><strong>Random Forest</strong></td>
+        <td><strong>67.94%</strong></td>
+        <td><strong>36.03%</strong></td>
+        <td>68.22%</td>
+        <td>47.16%</td>
+        <td><strong>0.7353</strong></td>
+        <td><strong>0.3713</strong></td>
+      </tr>
+
+    </table>
+
+    <h3>Model vs baseline</h3>
+
+    <img
+      src="outputs/capstone/precision_at_10_comparison.png"
+      alt="Top-10 percent precision comparison"
+    >
+
+  </section>
+
+
+  <!-- =====================================================
+       5. INTERPRETATION
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>5. Interpretation</h2>
+
+    <p>
+      The Random Forest placed the greatest feature importance on
+      historical search visibility and click activity.
+    </p>
+
+    <img
+      src="outputs/capstone/random_forest_feature_importance.png"
+      alt="Random Forest feature importance"
+    >
+
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>Importance</th>
+      </tr>
+
+      <tr>
+        <td>avg_impressions</td>
+        <td>59.17%</td>
+      </tr>
+
+      <tr>
+        <td>avg_clicks</td>
+        <td>20.50%</td>
+      </tr>
+
+      <tr>
+        <td>avg_position</td>
+        <td>7.52%</td>
+      </tr>
+
+      <tr>
+        <td>avg_pageviews</td>
+        <td>6.42%</td>
+      </tr>
+
+      <tr>
+        <td>avg_sessions</td>
+        <td>6.39%</td>
+      </tr>
+    </table>
+
+    <p>
+      These importances describe the fitted model and should not be
+      interpreted as causal effects.
+    </p>
+
+    <p>
+      Error analysis showed that some highly ranked pages did not
+      subsequently improve. Pages with measurable search visibility
+      and very low historical click activity can be difficult to
+      distinguish from successful opportunities using the available
+      features.
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       6. LIMITATIONS
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>6. Limitations & Honest Framing</h2>
+
+    <ul>
+
+      <li>
+        The target measures whether average clicks increased from one
+        month to the next; it does not measure whether a page actually
+        needed a content refresh.
+      </li>
+
+      <li>
+        The modeling population was restricted to rows with usable
+        March average search position. This limits generalization to
+        pages with usable Search Console position data.
+      </li>
+
+      <li>
+        The evaluation is grouped by client and therefore measures
+        generalization to clients not used for training.
+      </li>
+
+      <li>
+        The Random Forest improvement over the baseline was measurable
+        but modest: 41.93% versus 38.40% Precision@10%.
+      </li>
+
+      <li>
+        The ranking identifies directional opportunities rather than
+        causal effects.
+      </li>
+
+      <li>
+        The ranked queue should be treated as decision support rather
+        than an automatic content-refresh decision.
+      </li>
+
+    </ul>
+
+  </section>
+
+
+  <!-- =====================================================
+       7. RANKED RECOMMENDATIONS
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>7. Ranked Recommendations</h2>
+
+    <p>
+      The Random Forest produces an opportunity score for eligible
+      content pages. Higher scores receive higher review priority.
+    </p>
+
+    <h3>Recommended workflow</h3>
+
+    <ol>
+
+      <li>
+        Prioritize the highest-ranked pages from the Random Forest queue.
+      </li>
+
+      <li>
+        Review click capture and content/search-result alignment for
+        pages with measurable visibility and low historical click activity.
+      </li>
+
+      <li>
+        Use the score to prioritize human investigation rather than
+        automatically refreshing content.
+      </li>
+
+      <li>
+        Compare editorial decisions and later outcomes against the
+        ranked queue before treating the system as a production rule.
+      </li>
+
+    </ol>
+
+    <div class="highlight">
+      <strong>Recommendation:</strong>
+      use the Random Forest as the preferred experimental ranking model,
+      while retaining the transparent W04 baseline as a simple benchmark.
+    </div>
+
+    <p>
+      The highest-ranked examples are pseudonymous content identifiers
+      only; no client-identifying information is exposed.
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       8. REPRODUCIBILITY
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>8. Reproducibility</h2>
+
+    <p>
+      The complete analysis is implemented in
+      <code>work/notebooks/capstone.ipynb</code>.
+    </p>
+
+    <p>
+      The notebook loads the warehouse data, constructs the March-April
+      dataset, defines the target, builds the baseline, trains the
+      models, performs client-grouped validation, evaluates the rankings,
+      and generates the recommendation queue.
+    </p>
+
+    <h3>Saved artifacts</h3>
+
+    <ul>
+      <li>ranking_results.csv</li>
+      <li>classification_results.csv</li>
+      <li>feature_importance.csv</li>
+      <li>top_recommendations.csv</li>
+      <li>precision_at_10_comparison.png</li>
+      <li>random_forest_feature_importance.png</li>
+    </ul>
+
+    <p>
+      Random seed: <strong>42</strong>.
+    </p>
+
+    <p>
+      The notebook was run from top to bottom successfully without errors.
+    </p>
+
+  </section>
+
+
+  <!-- =====================================================
+       9. ACKNOWLEDGMENTS
+       ===================================================== -->
+
+  <section class="paper-section">
+
+    <h2>9. Acknowledgments & Data Credit</h2>
+
+    <p>
+      Built on the FlyRank ML Internship dataset.
+    </p>
+
+    <p>
+      <a href="https://flyrank.ai" target="_blank" rel="noopener">
+        FlyRank
+      </a>
+    </p>
+
+  </section>
+
+
+  <div class="footer">
+
+    <p>
+      Search Intelligence Capstone · Decision-support analysis
+    </p>
+
+  </div>
+
+</div>
+
+</body>
+</html>
